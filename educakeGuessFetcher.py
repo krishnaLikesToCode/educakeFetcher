@@ -1,23 +1,16 @@
 from curl_cffi import requests
+import tkinter as tk
 
-loginSession=requests.Session(impersonate="chrome100")
+# --------
+# BACK-END 
+# --------
 
-def getUserCredentials():
-    try:
-        userCredFile=open("educakeCredentials.txt","r")
-        hello=userCredFile.read().split("\n")
-        print(hello)
-    
-    except:
-        print("No credentials file was found. Creating one now...\n\n")
-        getUsername=int(input("Enter your educake username\t"))
-        getPassword=int(input("\n\nEnter your Educake password"))
-        userCredFile=open("educakeCredentials","w")
-        #working on it
+# Declaring session variables 
 
-username="YOUR_USERNAME"
-password="YOUR_PASSWORD"
+# Define payload
+loginPayload={"username" : "", "password" : "", "lastname" : "", "userType" : "student","allowEmailForUsername" : True}
 
+# Define request headers for GET and POST HTTPS requests
 headers = {
     "User-Agent": "Mozilla/5.0 (X11; Linux x86_64; rv:146.0) Gecko/20100101 Firefox/146.0",
     "Content-Type": "application/json",
@@ -35,12 +28,18 @@ headers = {
     "Connection": "keep-alive",
 }
 
-loginPayload={"username" : username, "password" : password, "lastname" : "", "userType" : "student","allowEmailForUsername" : True}
+# Define dictionary that will contain correctAnswers of quiz
+correctAnswersDict={}
 
+# Create session impersonating a chrome browser request
+loginSession=requests.Session(impersonate="chrome120")
 
-def getTokens(loginPayload,verbose=False):
+# Functions
+
+def getTokens(loginPayload,verbose=False):# Function to get session XSRF-TOKEN, get/generate JWT-TOKEN and accumulate session cookies
     global loginHeaders,loginSession
     
+    #URLs
     frontEndLoginURL="https://my.educake.co.uk/student-login"
     loginURL="https://my.educake.co.uk/login"
     sessionTokenURL="https://my.educake.co.uk/session-token"
@@ -56,7 +55,7 @@ def getTokens(loginPayload,verbose=False):
     # giving access/authorization to get a JWT token from my.educake.co.uk/session-token
     apiLoginPageResponse = loginSession.post(loginURL,headers=headers,json=loginPayload)# send POST request with payload/login info
     if verbose:print(f"Finished API login page response with code {apiLoginPageResponse.status_code}\n\n\n")
-    
+
     XSRF_TOKEN=(apiLoginPageResponse.cookies.get_dict())['XSRF-TOKEN']# Get new XSRF-TOKEN
     headers['X-XSRF-TOKEN']= XSRF_TOKEN# Replace old XSRF-TOKEN with new, permanent one
 
@@ -73,71 +72,114 @@ def getTokens(loginPayload,verbose=False):
 
 
 
+def getUserCredentialsAndAddToHeader(verbose=False):# Function to get user credentials, checks validity, adds to request header and saves to file
+    global loginPayload
+    uName,uPass="",""
+    try: # If credentials file is found, and credentials are valid, assign the credentials to the login payload
+        userCredFile=open("educakeCredentials.txt","r")
+        credentials=userCredFile.read().split("\n")
+        uName=credentials[0]
+        uPass=credentials[1]
+        loginPayload['username']=uName
+        loginPayload['password']=uPass
+        getTokens(loginPayload)
 
-# getting URL to get questionIDs from
-browserUrl=("https://my.educake.co.uk/my-educake/quiz/185054455")
-splitURL=browserUrl.split("/");quizID=splitURL[-1]
-urlToGoTo=f"https://my.educake.co.uk/api/student/quiz/{quizID}"
+    except:
+        print("No credentials file was found, or was invalid. Creating one now...\n\n")
+        validCredentials=False
+        while not(validCredentials):
+            getUsername=str(input("Enter your educake username\t"))
+            getPassword=str(input("\n\nEnter your Educake password\t"))
+            try: 
+                loginPayload["username"]=getUsername
+                loginPayload["password"]=getPassword
+                getTokens(loginPayload,verbose=verbose)
+                print("\n\nCredentials authorized, saving them now...")
+                uName=getUsername
+                uPass=getPassword
+                validCredentials=True
+            except KeyError:
+                print("\n\nCredentials invalid, maybe there was a typo?")
 
-
-# Defining security tokens for request headers
-tokens=getTokens(loginPayload)
-
-XSRF_TOKEN=tokens[0]
-
-JWT_TOKEN=tokens[1]
-
-
-# updating headers with JWT-TOKEN
-headers['Authorization']= JWT_TOKEN
-
-# gets URL reponse to request
-urlResponse=loginSession.get(urlToGoTo,headers=headers)
-
-
-print(f"Got question IDs with code{urlResponse.status_code}, reason {urlResponse.reason}")#give code (200 means success, 403 means JWT is probably expired, 404 is invalid quiz)
-
-
-#Records text of URL
-responseAsText=urlResponse.text
-
-
-#sets start and end of where to look (starts at 'questions', finishes at end of questionIDs list)
-start = responseAsText.find("\"questions\":[")
-end = responseAsText.find(",\"questionMap\"")
-
-#puts into iterable list format
-questionIDs=((responseAsText[start:end]).replace("\"questions\":[","")).split(",")#gets questionIDs in list form, yay!
-
-#Getting answers, using questionIDs
-
-baseAnswerURL="https://my.educake.co.uk/api/course/question/"
-
-correctAnswerLUT={}
-correctAnswerArr=[]
-
-for i in range(len(questionIDs)):
-    answerURL=f"{baseAnswerURL}{questionIDs[i]}/mark"
-
-    sendPrompt={"givenAnswer" : "-1"}
-
-    answerURLresponse=loginSession.post(answerURL,headers=headers,json=sendPrompt)
-    answerResponseAsText=answerURLresponse.text
+        userCredFile=open("educakeCredentials.txt","w")
+        userCredFile.write(f"{uName}\n{uPass}")
 
 
-    nstart=answerResponseAsText.find("\"correctAnswers\":[")
 
-    nend=answerResponseAsText.find("],\"reasoning\":")
+def getQuizURL(browserURL):# Pretty self explanitory
+    splitURL=browserURL.split("/");quizID=splitURL[-1]
+    return f"https://my.educake.co.uk/api/student/quiz/{quizID}"
 
-    correctAnswers=((answerResponseAsText[nstart:nend]).replace("\"correctAnswers\":[","")).replace("\"","").split(",")
-    print(f"Question {i+1} answer: {correctAnswers}")
 
+
+def fetchQuizAnswers(quizBrowserURL,verbose=False):
+    global correctAnswersDict
+
+    # Get username and password, add to request headers
+    getUserCredentialsAndAddToHeader()
+
+    # Defining security tokens for request headers
+    tokens=getTokens(loginPayload)
+
+    XSRF_TOKEN=tokens[0]
+
+    JWT_TOKEN=tokens[1]
+
+    # Updating headers with JWT-TOKEN and XSRF-TOKEN
+    headers['Authorization']= JWT_TOKEN
+    headers['X-XSRF-TOKEN']= XSRF_TOKEN
+
+    # Get quiz URL
+    urlToGoTo=getQuizURL(quizBrowserURL)
+
+    # Send GET request to questionIDs URL
+    urlResponse=loginSession.get(urlToGoTo,headers=headers)
+
+
+    if verbose:print(f"Got question IDs with code{urlResponse.status_code}, reason {urlResponse.reason}")
+
+    # Records text of URL
+    responseAsText=urlResponse.text
+
+
+    # Sets start and end of where to look (starts at 'questions', finishes at end of questionIDs list)
+    start = responseAsText.find("\"questions\":[")
+    end = responseAsText.find(",\"questionMap\"")
+
+    # Puts into iterable list format
+    questionIDs=((responseAsText[start:end]).replace("\"questions\":[","")).split(",")# Gets questionIDs in list form
     
-
+    # Defining base answer URL template
+    baseAnswerURL="https://my.educake.co.uk/api/course/question/"
     
-
-
-
+    # Defining answers dictionary
     
+    # Iterating through questionsIDs and getting answers
+    for i in range(len(questionIDs)):
+        
+        # Filling in URL with QuestionID
+        answerURL=f"{baseAnswerURL}{questionIDs[i]}/mark"
+        
+        # Defining dummy answer to send via POST
+        sendPrompt={"givenAnswer" : "-1"}
 
+        # Send POST request to URL, with dummy answer and headers, then get text reponse from page
+        answerURLresponse=loginSession.post(answerURL,headers=headers,json=sendPrompt)
+        answerResponseAsText=answerURLresponse.text
+
+
+        # Define start point of 'correctAnswers'
+        nstart=answerResponseAsText.find("\"correctAnswers\":[")
+
+        # Define end point of 'correctAnswers'
+        nend=answerResponseAsText.find("],\"reasoning\":")
+
+        # Extract answer
+        correctAnswer=((answerResponseAsText[nstart:nend]).replace("\"correctAnswers\":[","")).replace("\"","").split(",")[0]
+
+        # Print answer, add to LUT and ARR
+        print(f"Question {i+1} answer: {correctAnswer}")
+        correctAnswersDict[f"Q{i+1}"]= correctAnswer
+
+fetchQuizAnswers(url:=str(input("Enter the quiz URL\t")))
 
