@@ -1,6 +1,7 @@
-# EducakeFetcher (a practical research project on HTTP request and response, webiste interaction and security headers)
+# EducakeFetcher 
 
-A simple python program that fetches the answers to an educake quiz
+### A Python-based program that fetches and displays Educake answers
+This program was made as a practical research project on HTTP request and response, webiste interaction and security headers.
 
 ## Requirements
 
