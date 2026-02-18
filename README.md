@@ -1,17 +1,18 @@
-# EducakeFetcher (experimental)
+# EducakeFetcher (a practical research project on HTTP request and response, webiste interaction and security headers)
 
-A simple python program that fetches the answers to an educake quiz at a given URL.
+A simple python program that fetches the answers to an educake quiz
 
 ## Requirements
-#### Request Headers (from logged in session)
-- XSRF token (found in devtools -> network -> request headers -> X-XSRF-TOKEN)
-- AUTH token (found in devtools -> network -> request headers -> Authorization)
-#### URL
-- Full HTTPS URL to educake quiz (can be gotten by going onto quiz you want in logged in session, and copying from URL bar)
-#### Program Requirements
+
+#### Prerequisites
 - Python 3.9+
-- External PIP library 'Requests' installed
+- External PIP library 'curl_cffi' installed
 - Internet connection
+#### Program requirements
+- URL to the quiz that you want to access (must not end in /true, remove the /true in that case)
+- Valid Educake username (can be the email assigned to educake account)
+- Valid Educake password
+- 
 
 
 
