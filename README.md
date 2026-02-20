@@ -14,6 +14,7 @@ This repository contains 2 main versions of the code:
 ### **Prerequisites (for standalone Python file)**
 - Python 3.9+
 - External PIP library 'curl_cffi' installed
+- External PIP library 'customtkinter' installed
 - Internet connection
 
 ### **Prerequisites (for application)**
