@@ -1,24 +1,29 @@
 # :tada: EduFetch V1.0.1
-***(Application version comming soon!)***
+***(GUI and Application released!)***
 
-### ℹ️ A Python-based program that fetches and displays Educake answers 
+### ℹ️ A Python-based GUI that fetches and displays Educake answers 
 
-This repository contains 2 main versions of the code:
+***This repository contains 2 main versions of the code:***
 <br>
-- The original Python file (commented and documented for people looking to write their own program, or just understand how it works)
-- ~~Application with .exe file (for Windows) and .bin file (for MacOS and Linux, #iusearchbtw)~~  :soon: **Coming soon...**
+- The original Python file *(commented and documented for easy understanding and addition)*
+- Applications for:
+
+  * Windows
+  * MacOS
+  * Linux *(Linux executable file provided, so you might want to convert it to a .desktop)*
 <br>
 
 ## 🛠️ Requirements
 
-### **Prerequisites (for standalone Python file)**
-- Python 3.9+
+### **Prerequisites *(for Python file)***
+- Python 3.12+
 - External PIP library 'curl_cffi' installed
 - External PIP library 'customtkinter' installed
 - Internet connection
 
-### **Prerequisites (for application)**
+### **Prerequisites *(for Application)***
 - Internet connection
+- Permissions to run file
 
 ### **Program requirements**
 - URL to the quiz that you want to access (must not end in /true, remove the /true in that case)
@@ -29,13 +34,50 @@ This repository contains 2 main versions of the code:
 ## 🚀 Installation Guide
 
 ### **For application**
-#### :soon: **Coming soon...**
+***1. ) Click on green "Code" button on the homepage of this repository, then select "Download ZIP"***...
+
+<br>
+
+#### <ins>On Windows</ins>
+
+***2. ) Navigate to "EduFetch-main.zip" in File Explorer, right click and press "Extract all"***
+
+***3. ) Open the subsequent "EduFetch-main" folder -> "EduFetch-main" -> "Windows_Application" -> "EduFetch.exe"***
+
+***4.) Double click to run, and click "Run" or "Run anyway" when security prompt comes up :tada:***
+
 <br> 
 
-### **For standalone Python file**
-#### 1. ) Click on the green "Code" button on the homepage of this repo, and select "Download ZIP"
-#### 2. ) Find the downloaded file, and extract it
-#### 3. ) Open the subsequent folder and open "educakeGuessFetcher.py" :tada:
+#### <ins>On Linux</ins>
+
+***2. ) Navigate to "EduFetch-main.zip", and extract with your tool of choice (either your file manager's built-in archiver or Unzip utility)***
+
+***3. ) Open the subsequent "EduFetch-main" folder -> "EduFetch-main" -> "Linux_Application" -> "EduFetch"***
+
+***4. ) Copy file path of executable, then open terminal and run  `sudo chmod +x path/that/you/copied`***
+
+***5.) Run file via your file manager or just paste the path to the file into the terminal and hit enter :tada:***
+
+<br>
+
+#### <ins>On MacOS</ins>
+
+***2.) Navigate to "EduFetch-main.zip" in Finder, and double click to extract it***
+
+~~***3.) Open the subsequent "EduFetch-main" folder -> "EduFetch-main" -> "MacOS_Application" -> "EduFetch.app"***~~
+
+~~***4.) Double click file and accept/dismiss any warnings that come up :tada:***~~ :soon: **Coming soon...**
+
+<br>
+
+### **For standalone Python file** 
+
+***1. ) Click on the green "Code" button on the homepage of this repo, and select "Download ZIP"***
+  
+***2. ) Find the downloaded file, and extract it (if you don't know how you probably shouldn't be on this option)***
+
+***3. ) Navigate to "EduFetch-main" -> "EduFetch-main" -> "EduFetch.py" :tada:***
+
 <br>
 
 ## ⚠️ Disclaimers
@@ -58,10 +100,9 @@ This repository contains 2 main versions of the code:
 
 ### ***Link to profile: https://github.com/krishnaLikesToCode***
 
-<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
-### **Keywords for SEO**
-#### ***educake answer bot, educake hacks, educake hacker, educake answer fetcher, educake bot, educake hacker, educake answers, educake guesser, educake solver, educake quiz solver, quiz hacks, educake answer app, desktop application, GUI, educake***
+
+#### <!-- ***educake answer bot, educake hacks, educake hacker, educake answer fetcher, educake bot, educake hacker, educake answers, educake guesser, educake solver, educake quiz solver, quiz hacks, educake answer app, desktop application, GUI, educake***-->
 
 
 
