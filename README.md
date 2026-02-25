@@ -5,7 +5,7 @@
 
 |||
 | :---: | :---: |
-| ![Alt Text 1](Images/screenshotWithExampleQuiz.png) | ![Alt Text 2](Images/screenshotWithPassPrompt.png) |
+| ![Alt Text 1](Images/ScreenshotOnWindows.png) | ![Alt Text 2](Images/screenshotWithPassPrompt.png) |
 
 ***This repository contains 2 main versions of the code:***
 <br>
