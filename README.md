@@ -3,9 +3,9 @@
 
 ### ℹ️ A Python-based GUI that fetches and displays Educake answers
 
-|||
+| ***Windows*** | ***Linux*** |
 | :---: | :---: |
-| ![Alt Text 1](Images/ScreenshotOnWindows.png) | ![Alt Text 2](Images/screenshotWithPassPrompt.png) |
+| ![Alt Text 1](Images/ScreenshotOnWindows.png) | ![Alt Text 2](Images/ScreenshotOnLinux.png) |
 
 ***This repository contains 2 main versions of the code:***
 <br>
