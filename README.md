@@ -1,7 +1,11 @@
 # :tada: EduFetch V1.0.1
 ***(GUI and Application released!)***
 
-### ℹ️ A Python-based GUI that fetches and displays Educake answers 
+### ℹ️ A Python-based GUI that fetches and displays Educake answers
+
+|||
+| :---: | :---: |
+| ![Alt Text 1](Images/screenshotWithExampleQuiz.png) | ![Alt Text 2](Images/screenshotWithPassPrompt.png) |
 
 ***This repository contains 2 main versions of the code:***
 <br>
